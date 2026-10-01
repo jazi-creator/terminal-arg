@@ -135,6 +135,10 @@ HTML
             text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
         }
 
+        .special-msg {
+            color: #ffaa00;
+        }
+
         #greeting {
             color: #00ffff;
             margin-bottom: 15px;
@@ -189,7 +193,6 @@ HTML
         <div id="selectionScreen">
             <h1>
                 <span>[ IDENTIFICACIÓN ]</span>
-                <!-- Aquí pusimos la H azul bien visible como un botón interactivo -->
                 <button class="blue-h-btn" onclick="lanzarRickroll()" title="Pícale aquí">[H]</button>
             </h1>
             <p>Selecciona tu perfil de agente para iniciar el protocolo de acceso:</p>
@@ -256,19 +259,37 @@ HTML
         }
 
         function verificarCodigo() {
-            const input = document.getElementById('codeInput').value.trim();
+            const input = document.getElementById('codeInput').value.trim().toUpperCase();
             const output = document.getElementById('output');
 
             if (input === "") {
                 output.className = "error";
-                output.innerText = "> ERROR: El campo no puede estar vacío.";
+                output.innerHTML = "> ERROR: El campo no puede estar vacío.";
                 return;
             }
 
-            if (input.toUpperCase() === codigoSecreto.toUpperCase()) {
+            // 1. Código principal secreto
+            if (input === codigoSecreto.toUpperCase()) {
                 output.className = "success";
                 output.innerText = "> " + mensajeSecreto;
-            } else {
+            } 
+            // 2. Código Matrix
+            else if (input === "MATRIX" || input === "SYSTEM_FAIL") {
+                output.className = "error";
+                output.innerHTML = "> ALERTA: Simulando hackeo de matriz... Tranquilo, todo sigue bajo control.";
+            }
+            // 3. Código de Robux
+            else if (input === "ROBUX" || input === "VIP") {
+                output.className = "special-msg";
+                output.innerHTML = "> ERROR 404: 0 Robux concedidos por intenso. ¡Sigue buscando el código real!";
+            }
+            // 4. Código de ayuda
+            else if (input === "HELP" || input === "AYUDA") {
+                output.className = "special-msg";
+                output.innerHTML = "> AYUDA: No hay pistas gratis. Ve a llorarle a Cristopher para que te ayude.";
+            } 
+            // Código incorrecto genérico
+            else {
                 output.className = "error";
                 output.innerText = `> ACCESO DENEGADO para ${usuarioActual}. Secuencia incorrecta. Vuelve a intentarlo cuando tengas todas las piezas.`;
             }
