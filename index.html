@@ -1,5 +1,3 @@
-
-
 HTML
 <!DOCTYPE html>
 <html lang="es">
@@ -23,6 +21,7 @@ HTML
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            position: relative;
         }
 
         .terminal-container {
@@ -77,7 +76,7 @@ HTML
             background: #00ff66;
             color: #000;
             border: none;
-            padding: 0 20px;
+            padding: 12px 20px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
@@ -87,6 +86,34 @@ HTML
 
         button:hover {
             background: #00cc52;
+        }
+
+        .user-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .user-btn {
+            background: #000;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            padding: 12px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .user-btn:hover {
+            background: #00ff66;
+            color: #000;
+        }
+
+        .hidden {
+            display: none;
         }
 
         #output {
@@ -104,28 +131,97 @@ HTML
             color: #00ffff;
             text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
         }
+
+        #greeting {
+            color: #00ffff;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Botón secreto en la esquina */
+        #secret-dot {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 15px;
+            height: 15px;
+            background: transparent;
+            border: none;
+            color: #112211; /* Casi invisible pero detectable */
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 10px;
+        }
+
+        #secret-dot:hover {
+            color: #00ff66;
+        }
     </style>
 </head>
 <body>
 
     <div class="terminal-container">
-        <h1>[ SISTEMA DE VERIFICACIÓN DE ACCESO ]</h1>
-        <p>Introduce la secuencia obtenida en los fragmentos físicos para descifrar el mensaje final.</p>
-        
-        <div class="input-group">
-            <input type="text" id="codeInput" placeholder="INGRESA EL CÓDIGO...">
-            <button onclick="verificarCodigo()">EJECUTAR</button>
+        <!-- PANTALLA 1: SELECCIÓN DE USUARIO -->
+        <div id="selectionScreen">
+            <h1>[ IDENTIFICACIÓN REQUERIDA ]</h1>
+            <p>Selecciona tu perfil de agente para iniciar el protocolo de acceso:</p>
+            <div class="user-buttons">
+                <button class="user-btn" onclick="seleccionarUsuario('Cristopher')">&gt; Cristopher</button>
+                <button class="user-btn" onclick="seleccionarUsuario('Dylan')">&gt; Dylan</button>
+                <button class="user-btn" onclick="seleccionarUsuario('Víctor')">&gt; Víctor</button>
+                <button class="user-btn" onclick="seleccionarUsuario('Jazi')">&gt; Jazi</button>
+            </div>
         </div>
 
-        <div id="output"></div>
+        <!-- PANTALLA 2: TERMINAL (OCULTA AL INICIO) -->
+        <div id="terminalScreen" class="hidden">
+            <h1>[ SISTEMA DE VERIFICACIÓN DE ACCESO ]</h1>
+            <div id="greeting"></div>
+            <p id="customMessage" style="color: #ffaa00; font-style: italic; margin-bottom: 15px;"></p>
+            <p>Introduce la secuencia obtenida en los fragmentos físicos para descifrar el mensaje final.</p>
+            
+            <div class="input-group">
+                <input type="text" id="codeInput" placeholder="INGRESA EL CÓDIGO...">
+                <button onclick="verificarCodigo()">EJECUTAR</button>
+            </div>
+
+            <div id="output"></div>
+        </div>
     </div>
 
-    <script>
-        // Código secreto configurado
-        const codigoSecreto = "8Ñ-3O-X9"; 
+    <!-- BOTÓN ESCONDIDO EN LA ESQUINITA -->
+    <button id="secret-dot" onclick="revelarSecreto()" title=".">.</button>
 
-        // Mensaje secreto que se revelará al acertar
+    <script>
+        const codigoSecreto = "8Ñ-3O-X9"; 
         const mensajeSecreto = "ACCESO CONCEDIDO.\n\nsoy novio de mia la de la escolta gracias por participar";
+        let usuarioActual = "";
+
+        function seleccionarUsuario(nombre) {
+            usuarioActual = nombre;
+            const customMsg = document.getElementById('customMessage');
+
+            if (nombre === 'Jazi') {
+                alert("MENTIROSO");
+                // Te saca de la página mandándote a Google (o puedes poner 'about:blank' para pantalla en blanco)
+                window.location.href = "https://www.google.com";
+                return;
+            }
+
+            // Ocultar pantalla de selección y mostrar la terminal
+            document.getElementById('selectionScreen').classList.add('hidden');
+            document.getElementById('terminalScreen').classList.remove('hidden');
+            document.getElementById('greeting').innerText = `>> AGENTE RECONOCIDO: ${usuarioActual.toUpperCase()}`;
+
+            // Mensajes personalizados para cada uno
+            if (nombre === 'Cristopher') {
+                customMsg.innerText = ">> REGISTRO: \"no pense que lo lograrias bueno... realmente si lo pense\"";
+            } else if (nombre === 'Dylan') {
+                customMsg.innerText = ">> REGISTRO: \"creo que es obvio que pusiste el codigo por que christopher lo resolvió\"";
+            } else if (nombre === 'Víctor') {
+                customMsg.innerText = ">> REGISTRO: \"supongo que christopher ya lo resolvio\"";
+            }
+        }
 
         function verificarCodigo() {
             const input = document.getElementById('codeInput').value.trim();
@@ -142,8 +238,12 @@ HTML
                 output.innerText = "> " + mensajeSecreto;
             } else {
                 output.className = "error";
-                output.innerText = "> ACCESO DENEGADO. Secuencia incorrecta. Vuelve a intentarlo cuando tengas todas las piezas.";
+                output.innerText = `> ACCESO DENEGADO para ${usuarioActual}. Secuencia incorrecta. Vuelve a intentarlo cuando tengas todas las piezas.`;
             }
+        }
+
+        function revelarSecreto() {
+            alert("o eres Jazi o lo descubriste");
         }
 
         document.getElementById("codeInput").addEventListener("keypress", function(event) {
