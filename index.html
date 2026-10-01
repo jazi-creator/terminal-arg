@@ -137,6 +137,25 @@
             font-weight: bold;
         }
 
+        /* Estilo para la H azul visible que lanza el Rickroll al hacerle clic */
+        .blue-h-link {
+            color: #00bfff;
+            background: none;
+            border: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.8);
+            padding: 0 5px;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .blue-h-link:hover {
+            transform: scale(1.3);
+        }
+
         /* Botón secreto en la esquina */
         #secret-dot {
             position: absolute;
@@ -163,7 +182,8 @@
         <!-- PANTALLA 1: SELECCIÓN DE USUARIO -->
         <div id="selectionScreen">
             <h1>[ IDENTIFICACIÓN REQUERIDA ]</h1>
-            <p>Selecciona tu perfil de agente para iniciar el protocolo de acceso:</p>
+            <!-- Aquí agregué la H azul visible en el texto de bienvenida -->
+            <p>Selecciona tu perfil de agente para iniciar el protocolo <button class="blue-h-link" onclick="lanzarRickroll()" title="¿Qué es esto?">[H]</button> de acceso:</p>
             <div class="user-buttons">
                 <button class="user-btn" onclick="seleccionarUsuario('Cristopher')">&gt; Cristopher</button>
                 <button class="user-btn" onclick="seleccionarUsuario('Dylan')">&gt; Dylan</button>
@@ -196,6 +216,10 @@
         const mensajeSecreto = "ACCESO CONCEDIDO.\n\nsoy novio de mia la de la escolta gracias por participar";
         const rickrollUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         let usuarioActual = "";
+
+        function lanzarRickroll() {
+            window.location.href = rickrollUrl;
+        }
 
         function seleccionarUsuario(nombre) {
             usuarioActual = nombre;
@@ -247,13 +271,6 @@
             alert("o eres Jazi o lo descubriste");
             seleccionarUsuario('Acceso Maestro');
         }
-
-        // Detectar si presionan la letra "H" en el teclado para mandar al Rickroll
-        document.addEventListener('keydown', function(event) {
-            if ((event.key === 'h' || event.key === 'H') && document.activeElement.tagName !== 'INPUT') {
-                window.location.href = rickrollUrl;
-            }
-        });
 
         document.getElementById("codeInput").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
