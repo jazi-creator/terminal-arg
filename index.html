@@ -273,17 +273,22 @@ HTML
                 output.className = "success";
                 output.innerText = "> " + mensajeSecreto;
             } 
-            // 2. Código Matrix
+            // 2. Código MAMA (¡La nueva broma!)
+            else if (input === "MAMA") {
+                output.className = "error";
+                output.innerHTML = "> hackendo espere un momento.... cagaste ahora le dire a tu mama";
+            }
+            // 3. Código Matrix
             else if (input === "MATRIX" || input === "SYSTEM_FAIL") {
                 output.className = "error";
                 output.innerHTML = "> ALERTA: Simulando hackeo de matriz... Tranquilo, todo sigue bajo control.";
             }
-            // 3. Código de Robux
+            // 4. Código de Robux
             else if (input === "ROBUX" || input === "VIP") {
                 output.className = "special-msg";
                 output.innerHTML = "> ERROR 404: 0 Robux concedidos por intenso. ¡Sigue buscando el código real!";
             }
-            // 4. Código de ayuda
+            // 5. Código de ayuda
             else if (input === "HELP" || input === "AYUDA") {
                 output.className = "special-msg";
                 output.innerHTML = "> AYUDA: No hay pistas gratis. Ve a llorarle a Cristopher para que te ayude.";
