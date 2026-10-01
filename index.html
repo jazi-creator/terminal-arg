@@ -1,0 +1,157 @@
+
+
+HTML
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL // ACCESO RESTRINGIDO</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: #050505;
+            color: #00ff66;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .terminal-container {
+            width: 90%;
+            max-width: 600px;
+            background: #0d0d0d;
+            border: 2px solid #00ff66;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+            padding: 30px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px dashed #00ff66;
+            padding-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #88cc99;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: #000;
+            border: 1px solid #00ff66;
+            color: #00ff66;
+            padding: 12px;
+            font-size: 1rem;
+            outline: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        input[type="text"]::placeholder {
+            color: #00441b;
+        }
+
+        button {
+            background: #00ff66;
+            color: #000;
+            border: none;
+            padding: 0 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #00cc52;
+        }
+
+        #output {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            min-height: 50px;
+        }
+
+        .error {
+            color: #ff3333;
+        }
+
+        .success {
+            color: #00ffff;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-container">
+        <h1>[ SISTEMA DE VERIFICACIÓN DE ACCESO ]</h1>
+        <p>Introduce la secuencia obtenida en los fragmentos físicos para descifrar el mensaje final.</p>
+        
+        <div class="input-group">
+            <input type="text" id="codeInput" placeholder="INGRESA EL CÓDIGO...">
+            <button onclick="verificarCodigo()">EJECUTAR</button>
+        </div>
+
+        <div id="output"></div>
+    </div>
+
+    <script>
+        // Código secreto configurado
+        const codigoSecreto = "8Ñ-3O-X9"; 
+
+        // Mensaje secreto que se revelará al acertar
+        const mensajeSecreto = "ACCESO CONCEDIDO.\n\nsoy novio de mia la de la escolta gracias por participar";
+
+        function verificarCodigo() {
+            const input = document.getElementById('codeInput').value.trim();
+            const output = document.getElementById('output');
+
+            if (input === "") {
+                output.className = "error";
+                output.innerText = "> ERROR: El campo no puede estar vacío.";
+                return;
+            }
+
+            if (input.toUpperCase() === codigoSecreto.toUpperCase()) {
+                output.className = "success";
+                output.innerText = "> " + mensajeSecreto;
+            } else {
+                output.className = "error";
+                output.innerText = "> ACCESO DENEGADO. Secuencia incorrecta. Vuelve a intentarlo cuando tengas todas las piezas.";
+            }
+        }
+
+        document.getElementById("codeInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                verificarCodigo();
+            }
+        });
+    </script>
+
+</body>
+</html>
